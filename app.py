@@ -44,8 +44,8 @@ def create_text_image(text, width, height):
     font = ImageFont.truetype(font_path, font_size)
     image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(image)
-    text_size = draw.textsize(text, font=font)
-    text_position = ((width - text_size[0]) // 2, (height - text_size[1]) // 2)
+    text_size = draw.textbbox((0, 0), text, font=font)  # textsize() 대신 textbbox() 사용
+    text_position = ((width - text_size[2] + text_size[0]) // 2, (height - text_size[3] + text_size[1]) // 2)
     
     # 텍스트를 흰색으로 그리기
     draw.text(text_position, text, font=font, fill=font_color)
