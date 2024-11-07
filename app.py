@@ -7,7 +7,7 @@ import pysrt
 import os
 
 # 필요한 경우 ImageMagick 경로 설정
-change_settings({"IMAGEMAGICK_BINARY": "/path/to/magick.exe"})
+change_settings({"IMAGEMAGICK_BINARY": "magick.exe"})
 
 # 기본 폰트 설정
 font_path = "./fonts/BMDOHYEON.ttf"  # 폰트 파일 경로를 정확히 지정
