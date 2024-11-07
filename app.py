@@ -7,7 +7,7 @@ import pysrt
 import os
 
 # 필요한 경우 ImageMagick 경로 설정
-change_settings({"IMAGEMAGICK_BINARY": "/usr/bin/convert"})
+# change_settings({"IMAGEMAGICK_BINARY": "/usr/bin/convert"})
 
 # 기본 폰트 설정
 font_path = "./fonts/BMDOHYEON.ttf"  # 폰트 파일 경로를 정확히 지정
@@ -63,7 +63,7 @@ def merge_subtitles(video_file, srt_file):
         # 자막 텍스트 생성 (기본 폰트 사용)
         txt_clip = TextClip(full_text, font=font_path, fontsize=font_size,
                                     color=font_color, stroke_color=stroke_color,
-                                    stroke_width=stroke_width)
+                                    stroke_width=stroke_width, method="caption")
 
         # 자막 클립 위치 및 시간 설정
         txt_clip = txt_clip.set_start(start).set_end(end).set_position(('center', video.h - 100))
@@ -90,10 +90,10 @@ def main():
 
     # 파일 업로드
     video_file = st.file_uploader("동영상 파일 업로드", type=["mp4", "avi", "mov"])
-    srt_file = st.file_uploader("SRT 자막 파일 업로드", type=["srt"])
+    srt_file = st.file_uploader("srt 자막 파일 업로드", type=["srt"])
 
     if video_file is not None and srt_file is not None:
-        if st.button("처리 시작"):
+        if st.button("동영상 만들기"):
             with st.spinner('처리 중... 잠시만 기다려주세요.'):
                 try:
                     output_video_path = merge_subtitles(video_file, srt_file)
