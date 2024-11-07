@@ -98,7 +98,7 @@ def merge_subtitles(video_file, srt_file):
 def main():
     st.title("(화자)(감정) 자막 프로그램")
 
-    st.write("동영상 파일과 SRT 자막 파일을 업로드해라. 자막은 `(화자)(감정)(자막)` 형식으로 작성된다.")
+    st.write("동영상 파일과 srt 자막 파일을 업로드하세요. 자막은 `(화자)(감정)(자막)` 형식으로 작성됩니다.")
 
     # 파일 업로드
     video_file = st.file_uploader("동영상 파일 업로드", type=["mp4", "avi", "mov"])
