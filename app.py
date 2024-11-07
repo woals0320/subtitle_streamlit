@@ -1,4 +1,3 @@
-!pip install moviepy
 
 import streamlit as st
 import moviepy.editor as mp
