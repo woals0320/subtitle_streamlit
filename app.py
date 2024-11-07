@@ -4,6 +4,7 @@ from moviepy.video.VideoClip import TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 import pysrt
 import os
+import numpy as np
 
 # 기본 폰트 설정
 font_path = "./fonts/BMDOHYEON.ttf"  # 폰트 파일 경로를 정확히 지정
@@ -29,6 +30,19 @@ def extract_speaker_emotion(subtitle_text):
         return text, "Unknown", "neutral"
     return subtitle_text, "Unknown", "neutral"
 
+def create_text_image(text, width, height):
+    # PIL을 사용하여 텍스트 이미지 생성
+    font = ImageFont.truetype(font_path, font_size)
+    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    text_size = draw.textsize(text, font=font)
+    text_position = ((width - text_size[0]) // 2, (height - text_size[1]) // 2)
+    
+    # 텍스트를 흰색으로 그리기
+    draw.text(text_position, text, font=font, fill=font_color)
+    
+    return np.array(image)
+
 def merge_subtitles(video_file, srt_file):
     # 임시 파일 경로 설정
     temp_video_path = "temp_video.mp4"
@@ -49,21 +63,14 @@ def merge_subtitles(video_file, srt_file):
     # 자막 클립을 생성하는 함수
     subtitle_clips = []
     for sub in subs:
-        start = sub.start.ordinal / 1000  # ms to seconds
-        end = sub.end.ordinal / 1000  # ms to seconds
+        start = sub.start.ordinal / 1000
+        end = sub.end.ordinal / 1000
         text, speaker, emotion = extract_speaker_emotion(sub.text)
 
-        # 자막 텍스트 (화자와 감정 추가)
         full_text = f"({speaker})({emotion}) {text}"
-
-        # 자막 텍스트 생성 (기본 폰트 사용)
-        txt_clip = TextClip(full_text, font=font_path, fontsize=font_size,
-                                    color=font_color, stroke_color=stroke_color,
-                                    stroke_width=stroke_width, method="label")
-
-        # 자막 클립 위치 및 시간 설정
-        txt_clip = txt_clip.set_start(start).set_end(end).set_position(('center', video.h - 100))
-
+        text_img = create_text_image(full_text, video.w, 100)
+        
+        txt_clip = mp.ImageClip(text_img).set_start(start).set_end(end).set_position(('center', video.h - 100))
         subtitle_clips.append(txt_clip)
 
     # 자막을 비디오에 오버레이
@@ -101,7 +108,7 @@ def main():
 
                     # 결과 비디오 다운로드 링크 제공
                     st.download_button(
-                        label="결과 비디오 다운로드",
+                        label="완성 비디오 다운로드",
                         data=video_bytes,
                         file_name="output_video.mp4",
                         mime="video/mp4"
