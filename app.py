@@ -59,7 +59,7 @@ def merge_subtitles(video_file, srt_file):
         # 자막 텍스트 생성 (기본 폰트 사용)
         txt_clip = TextClip(full_text, font=font_path, fontsize=font_size,
                                     color=font_color, stroke_color=stroke_color,
-                                    stroke_width=stroke_width, method="caption")
+                                    stroke_width=stroke_width, method="label")
 
         # 자막 클립 위치 및 시간 설정
         txt_clip = txt_clip.set_start(start).set_end(end).set_position(('center', video.h - 100))
