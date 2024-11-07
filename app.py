@@ -2,7 +2,7 @@ import streamlit as st
 import moviepy.editor as mp
 from moviepy.video.VideoClip import TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from PIL import Image, ImageDraw, Imagefont
+from PIL import Image, ImageDraw, ImageFont
 import pysrt
 import os
 import numpy as np
