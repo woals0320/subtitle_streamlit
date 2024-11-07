@@ -14,6 +14,14 @@ font_color = 'white'
 stroke_color = 'black'
 stroke_width = 1
 
+# 텍스트 크기를 계산하는 함수 수정
+def get_text_size(text, font):
+    # textsize() 대신 textbbox() 사용
+    bbox = ImageDraw.Draw(Image.new('RGB', (1, 1))).textbbox((0, 0), text, font)
+    width = bbox[2] - bbox[0]  # bbox의 좌측과 우측 차이로 텍스트의 너비 계산
+    height = bbox[3] - bbox[1]  # bbox의 상단과 하단 차이로 텍스트의 높이 계산
+    return width, height
+
 def extract_speaker_emotion(subtitle_text):
     # 자막 텍스트에서 화자와 감정을 추출
     if "|" in subtitle_text:
