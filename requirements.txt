@@ -3,3 +3,7 @@ moviepy
 pysrt
 Pillow
 numpy
+imageio[ffmpeg]
+tqdm
+emoji
+opencv-python
