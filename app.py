@@ -14,6 +14,51 @@ font_color = 'white'
 stroke_color = 'black'
 stroke_width = 1
 
+# 텍스트의 가로 길이를 기준으로 줄바꿈 처리
+def split_text_by_width(text, font, max_width):
+    words = text.split()  # 단어 단위로 분리
+    lines = []
+    current_line = ""
+
+    # 가상 이미지 객체 생성
+    image = Image.new("RGB", (1, 1))
+    draw = ImageDraw.Draw(image)
+
+    for word in words:
+        test_line = current_line + (" " if current_line else "") + word
+        width, _ = draw.textsize(test_line, font=font)
+
+        if width > max_width and current_line:
+            lines.append(current_line)
+            current_line = word
+        else:
+            current_line = test_line
+
+    if current_line:
+        lines.append(current_line)
+
+    return lines
+
+# 텍스트 이미지를 생성하는 함수
+def create_text_image(text, width, max_height):
+    font = ImageFont.truetype(font_path, font_size)
+    lines = split_text_by_width(text, font, width - 40)  # 좌우 20px 패딩 적용
+    line_height = font_size + 10
+    height = len(lines) * line_height + 20
+    height = min(height, max_height)
+
+    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+
+    y = 10
+    for line in lines:
+        text_width, _ = draw.textsize(line, font=font)
+        x = (width - text_width) // 2
+        draw.text((x, y), line, font=font, fill=font_color, stroke_width=stroke_width, stroke_fill=stroke_color)
+        y += line_height
+
+    return np.array(image)
+
 # 텍스트 크기를 계산하는 함수 수정
 def get_text_size(text, font):
     # textsize() 대신 textbbox() 사용
