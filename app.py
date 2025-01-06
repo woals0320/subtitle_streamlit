@@ -9,7 +9,7 @@ import numpy as np
 
 # 기본 폰트 설정
 font_path = "./fonts/BMDOHYEON.ttf"  # 폰트 파일 경로를 정확히 지정
-font_size = 30
+font_size = 32
 font_color = 'white'
 stroke_color = 'black'
 stroke_width = 1
